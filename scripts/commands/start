@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Usage ./start.sh [service_name]
+#
+
+source $HBICLI_BASE_DIR/functions.sh
+
+requested_svc=$1
+
+[ -n "$LOG_DIR" ] && ( [ -d "$LOG_DIR" ] || mkdir -p "$LOG_DIR" )
+
+if [[ -z $requested_svc ]]; then
+    tmux new-session -d -s $TMUX_SESSION_NAME
+
+    # Check config_default.sh for list of default services
+    for service in ${SERVICES_TO_START[@]}
+    do
+        echo "Starting: $service"
+        start_svc_in_tmux $service
+    done
+
+    tmux attach-session -t $TMUX_SESSION_NAME
+else
+    tmux has-session -t $TMUX_SESSION_NAME
+    if [[ $? != 0 ]]; then
+        tmux new-session -d -s $TMUX_SESSION_NAME
+    fi
+    
+    echo "Starting: $requested_svc"
+    start_svc_in_tmux $requested_svc
+fi

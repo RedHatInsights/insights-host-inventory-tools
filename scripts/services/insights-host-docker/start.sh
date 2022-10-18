@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+echo "Starting: $0"
+
+cd $INSIGHTS_HOST_DIR
+docker-compose -p $INSIGHTS_HOST_DOCKER_PROJECT -f $INSIGHTS_HOST_DOCKER_FILE up $INSIGHTS_HOST_DOCKER_SERVICES
