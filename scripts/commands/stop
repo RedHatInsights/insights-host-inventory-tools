@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Usage ./stop.sh [service_name]
+
+source $HBICLI_BASE_DIR/functions.sh
+
+requested_svc=$1
+
+if [[ -z $requested_svc ]]; then
+    for service in ${SERVICES_TO_START[@]}
+    do
+        echo "Stopping: $service"
+        stop_svc_in_tmux $service
+    done
+    tmux kill-session -t $TMUX_SESSION_NAME
+else
+    echo "Stopping: $requested_svc"
+    stop_svc_in_tmux $requested_svc
+fi

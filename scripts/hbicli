@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+export HBICLI_BASE_DIR=$(realpath $(dirname ${BASH_SOURCE}))
+export HBICLI_CMDS_DIR="$HBICLI_BASE_DIR/commands"
+export HBICLI_SVCS_DIR="$HBICLI_BASE_DIR/services"
+
+if [[ -f $HBICLI_BASE_DIR/config.sh ]]; then
+    source $HBICLI_BASE_DIR/config.sh
+fi
+source $HBICLI_BASE_DIR/config_default.sh
+
+echo $HBICLI_BASE_DIR
+
+echo ${0##*/}
+
+while getopts "l:x" option; do
+    case "${option}" in
+        l)
+            LIST_WHAT=$OPTARG
+            
+            case "$LIST_WHAT" in
+                commands)
+                    ls $HBICLI_CMDS_DIR
+                    exit 0
+                ;;
+                services)
+                    ls $HBICLI_SVCS_DIR
+                    exit 0
+                ;;
+                *)
+                    echo "Unrecognized list target: $LIST_WHAT" >&2
+                    exit 1
+                ;;
+            esac
+        ;;
+        x)
+            set -x
+            shift
+        ;;
+        *)
+            echo "Unrecognized option: $option" >&2
+            exit 1
+        ;;
+    esac
+done
+
+[[ $# > 1 ]] && {
+    echo "Only one command supported per invocation, requested: $@" >&2
+    exit 1
+}
+[[ $# = 0 ]] && {
+    echo "No command specified" >&2
+    exit 1
+}
+
+$HBICLI_CMDS_DIR/$@
