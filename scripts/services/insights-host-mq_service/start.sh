@@ -5,6 +5,7 @@ source functions.sh
 echo "Starting: $0"
 
 cd $INSIGHTS_HOST_DIR
-wait_for_docker_services $INSIGHTS_HOST_DOCKER_FILE "$INSIGHTS_HOST_DOCKER_SERVICES"
-sleep 15
+# Wait for database and kafka
+wait_for_ports $DB_PORT $KAFKA_PORT
+sleep 10 # Give Kafka a chance to be ready.
 pipenv run make run_inv_mq_service

@@ -4,6 +4,24 @@
 : ${ROOT_DIR:=${HBICLI_BASE_DIR}/../..}
 export ROOT_DIR
 
+#
+# Ports
+#
+: ${DB_PORT:="5432"}
+export DB_PORT
+
+: ${KAFKA_PORT:="29092"}
+export KAFKA_PORT
+
+: ${ELASTICSEARCH_PORT:="9200 9300"}
+export ELASTICSEARCH_PORT
+
+: ${XJOIN_PORT:="4000"}
+export XJOIN_PORT
+
+#
+# Services
+#
 DEFAULT_SERVICES=(
     "insights-host-docker"
     "elasticsearch-docker"

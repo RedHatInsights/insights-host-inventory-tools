@@ -55,3 +55,20 @@ function wait_for_docker_services {
     done
     echo "All services have been started."
 }
+
+function port_open {
+    lsof -i :$1 -P -n | grep LISTEN 2>&1 > /dev/null
+    return $?
+}
+
+function wait_for_ports {
+    for port in $@
+    do
+        echo "Waiting for port: $port"
+        until port_open $port
+        do
+            sleep 2
+        done
+        echo "Port: $port ready"
+    done
+}
