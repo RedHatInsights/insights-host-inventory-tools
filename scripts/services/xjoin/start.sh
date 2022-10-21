@@ -5,7 +5,8 @@ source functions.sh
 echo "Starting: $0"
 
 cd $XJOIN_DIR
-wait_for_docker_services $XJOIN_DOCKER_FILE "$XJOIN_DOCKER_SERVICES"
-sleep 15
+# wait for elasticsearch
+wait_for_ports $ELASTICSEARCH_PORT
+sleep 10
 npm run seed
 npm start
