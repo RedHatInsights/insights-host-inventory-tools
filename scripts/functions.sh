@@ -67,8 +67,26 @@ function wait_for_ports {
         echo "Waiting for port: $port"
         until port_open $port
         do
+            echo -n "."
             sleep 2
         done
+        echo
         echo "Port: $port ready"
     done
+}
+
+function elasticsearch_ready {
+    curl -u elastic: http://localhost:$ELASTICSEARCH_PORT > /dev/null 2>&1
+    return $?
+}
+
+function wait_for_elasticsearch {
+    echo "Waiting for elasticsearch"
+    until elasticsearch_ready
+    do
+        echo -n "."
+        sleep 2
+    done
+    echo
+    echo "Elasticsearch is ready."
 }
